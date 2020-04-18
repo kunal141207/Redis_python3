@@ -7,13 +7,13 @@ To connect:
     telnet localhost 9000
 
     # sample input/output
-    SET foo 2
+    SET ku 2
     OK
-    GET foo
+    GET ku
     2
-    DEL foo
+    DEL ku
     OK
-    GET foos
+    GET ku
     NULL
     
   
