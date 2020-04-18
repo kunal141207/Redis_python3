@@ -4,30 +4,35 @@ import asyncio
 class Store:
     data = dict()
     
-    def set(self, key, val):
-        self.data[key] = val
+    @classmethod
+    def set(s, key, val):
+        s.data[key] = val
         return "OK"
         
-    def get(self, key):
-        if key in self.data:
-            return self.data[key]
+    @classmethod
+    def get(s, key):
+        if key in s.data:
+            return s.data[key]
         else:
             return "NULL"
             
-    def delete(self, key):
-        if key in self.data:
-            del self.data[key]
+    @classmethod
+    def delete(s, key):
+        if key in s.data:
+            del s.data[key]
             return "OK"
 
-    async def expire(self, key, value):
+    @classmethod
+    async def expire(s, key, value):
         await asyncio.sleep(value)
-        self.delete(key)
+        s.delete(key)
         return str(key)+"EXPIRED" 
         
-    def zadd(self, key, *items):
+    @classmethod    
+    def zadd(s, key, *items):
         a = [[],[]]
-        if key in self.data:
-            a = self.data.get(key)
+        if key in s.data:
+            a = s.data.get(key)
         
         data = zip(items[::2], items[1::2])
 
@@ -38,12 +43,12 @@ class Store:
                 a[0].append(name)
                 a[1].append(value)
         
-        self.data[key] = a
+        s.data[key] = a
         return "OK"
 
-
-    def zrank(self, key, value):
-        a = self.data.get(key)
+    @classmethod
+    def zrank(s, key, value):
+        a = s.data.get(key)
         if key in set(a[0]):
             val = a[1][a[0].index(value)]
             np_a = np.array(a[1])
@@ -52,46 +57,51 @@ class Store:
         
         return -1
 
-
-    def zrange(self, key, mn, mx):
+    @classmethod
+    def zrange(s, key, mn, mx):
         ans = []
-        a = self.data.get(key)
+        a = s.data.get(key)
         for i in range(len(a[0])):
             if a[1][i] <= mx and a[1][i] >= mn:
                 ans = ans + a[0][i]
                 
         return ans
-
             
-    def lpush(self, key, val):
-        if key in self.data and isinstance(self.data[key], list):
-            self.data[key].insert(0, val)
+    @classmethod
+    def lpush(s, key, val):
+        if key in s.data and isinstance(s.data[key], list):
+            s.data[key].insert(0, val)
         else:
-            self.data[key] = [val]
+            s.data[key] = [val]
         return "OK"
             
-    def rpush(self, key, val):
-        if key in self.data and isinstance(self.data[key], list):
-            self.data[key].append(val)
+    @classmethod
+    def rpush(s, key, val):
+        if key in s.data and isinstance(s.data[key], list):
+            s.data[key].append(val)
         else:
-            self.data[key] = [val]
+            s.data[key] = [val]
         return "OK"
             
-    def lpop(self, key):
-        if key in self.data and isinstance(self.data[key], list):
-            return self.data[key].pop(0)
+    @classmethod
+    def lpop(s, key):
+        if key in s.data and isinstance(s.data[key], list):
+            return s.data[key].pop(0)
         else:
             return "NULL"
     
-    def rpop(self, key):
-        if key in self.data and isinstance(self.data[key], list):
-            return self.data[key].pop()
+    @classmethod
+    def rpop(s, key):
+        if key in s.data and isinstance(s.data[key], list):
+            return s.data[key].pop()
         else:
             return "NULL"
             
-    def llen(self, key):
-        if key in self.data and isinstance(self.data[key], list):
-            return str(len(self.data[key]))
+    @classmethod
+    def llen(s, key):
+        if key in s.data and isinstance(s.data[key], list):
+            return str(len(s.data[key]))
         else:
-            return "0"
+            return "0" 
+
             
