@@ -33,7 +33,7 @@ class Thread(threading.Thread):
                 elif cmd == 'zrank':
                     res = store.Store.zrank(args[1],args[2])
                 elif cmd == 'zrange':
-                    res = store.Store.delete(args[1],args[2],args[3])
+                    res = store.Store.zrange(args[1],args[2],args[3])
                 elif cmd == 'lpush':
                     res = store.Store.lpush(args[1], args[2])
                 elif cmd == 'rpush':
