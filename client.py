@@ -1,5 +1,6 @@
 import threading
 import store
+import asyncio
 
 class Thread(threading.Thread):
 
@@ -27,13 +28,14 @@ class Thread(threading.Thread):
                 elif cmd == 'del':
                     res = store.Store.delete(args[1])
                 elif cmd == 'exp':
-                    res = store.Store.expire(args[1],args[2])
+                    res =  str(args[1])+ " will be deleted after " + str(args[2])+ "secs"
+                    asyncio.run(store.Store.expire(args[1],args[2]))
                 elif cmd == 'zadd':
                     res = store.Store.zadd(args[1],*args[2:])
                 elif cmd == 'zrank':
                     res = store.Store.zrank(args[1],args[2])
                 elif cmd == 'zrange':
-                    res = store.Store.delete(args[1],args[2],args[3])
+                    res = store.Store.zrange(args[1],args[2],args[3])
                 elif cmd == 'lpush':
                     res = store.Store.lpush(args[1], args[2])
                 elif cmd == 'rpush':

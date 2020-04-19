@@ -1,6 +1,7 @@
 import numpy as np
 import asyncio
 
+
 class Store:
     data = dict()
     
@@ -12,7 +13,7 @@ class Store:
     @classmethod
     def get(s, key):
         if key in s.data:
-            return s.data[key]
+            return str(s.data[key])
         else:
             return "NULL"
             
@@ -24,9 +25,8 @@ class Store:
 
     @classmethod
     async def expire(s, key, value):
-        await asyncio.sleep(value)
+        await asyncio.sleep(float(value))
         s.delete(key)
-        return str(key)+"EXPIRED" 
         
     @classmethod    
     def zadd(s, key, *items):
@@ -49,23 +49,23 @@ class Store:
     @classmethod
     def zrank(s, key, value):
         a = s.data.get(key)
-        if key in set(a[0]):
+        if str(value) in set(a[0]):
             val = a[1][a[0].index(value)]
             np_a = np.array(a[1])
             np_a = np.sort(np_a)
-            return min(np.where(np_a == val)[0])+1
+            return str( min(np.where(np_a == val)[0])+1)
         
-        return -1
+        return "NOT FOUND"
 
     @classmethod
     def zrange(s, key, mn, mx):
         ans = []
         a = s.data.get(key)
-        for i in range(len(a[0])):
-            if a[1][i] <= mx and a[1][i] >= mn:
-                ans = ans + a[0][i]
+        for i in range(len(a[1])):
+            if float(a[1][i]) <= float(mx) and float(a[1][i]) >= float(mn):
+                ans = ans + [a[0][i]]
                 
-        return ans
+        return str(ans)
             
     @classmethod
     def lpush(s, key, val):
