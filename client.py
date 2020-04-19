@@ -28,8 +28,8 @@ class Thread(threading.Thread):
                 elif cmd == 'del':
                     res = store.Store.delete(args[1])
                 elif cmd == 'exp':
-                    res =  str(args[1])+ " will be deleted after " + str(args[2])+ "secs"
-                    asyncio.run(store.Store.expire(args[1],args[2]))
+                    asyncio.create_task(store.Store.expire(args[1],args[2]))     
+                    res = str(args[1])+ " will be deleted after " + str(args[2])+ "secs"                
                 elif cmd == 'zadd':
                     res = store.Store.zadd(args[1],*args[2:])
                 elif cmd == 'zrank':

@@ -24,9 +24,14 @@ class Store:
             return "OK"
 
     @classmethod
-    async def expire(s, key, value):
+    async def deleteafter(s, key, value):
         await asyncio.sleep(float(value))
         s.delete(key)
+
+    @classmethod
+    async def expire(s, key, value):
+        asyncio.create_task(s.deleteafter(key,value)) 
+        return       
         
     @classmethod    
     def zadd(s, key, *items):
