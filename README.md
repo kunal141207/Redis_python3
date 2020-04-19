@@ -15,6 +15,11 @@ To connect:
     OK
     GET ku
     NULL
-    
+    ZADD ku a 1 b 2 c 3
+    OK
+    ZRANGE ku 0 2 
+    ['a', 'b']
+    ZRANK ku b
+    2  
   
   
