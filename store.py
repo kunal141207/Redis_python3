@@ -25,12 +25,16 @@ class Store:
 
     @classmethod
     async def deleteafter(s, key, value):
-        await asyncio.sleep(float(value))
+        print("abc")
+        asyncio.sleep(float(value))
         s.delete(key)
+        print("deleted")
 
     @classmethod
     async def expire(s, key, value):
-        asyncio.create_task(s.deleteafter(key,value)) 
+        print("running exp")
+        asyncio.ensure_future(s.deleteafter(key,value)) 
+        print("xyz")
         return       
         
     @classmethod    
